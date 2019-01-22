@@ -1,0 +1,111 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Smart Remote</title>
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="versie3.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./remote_files/mbedRPC.js" type="text/javascript" language="javascript"></script>
+    <style type="text/css"></style>
+    <script src="./remote_files/jquery.min.js"></script>
+    <script type="text/javascript">
+        mbed = new HTTPRPC();
+
+        RPCRequest = new RPCVariable(mbed, "Request");
+        RPCLearn = new RPCVariable(mbed, "Learn");
+        RPCName0 = new RPCVariable(mbed, "Learn_name0");
+        RPCName1 = new RPCVariable(mbed, "Learn_name1");
+        RPCName2 = new RPCVariable(mbed, "Learn_name2");
+        RPCName3 = new RPCVariable(mbed, "Learn_name3");
+        RPCName4 = new RPCVariable(mbed, "Learn_name4");
+        RPCName5 = new RPCVariable(mbed, "Learn_name5");
+        RPCName6 = new RPCVariable(mbed, "Learn_name6");
+        RPCName7 = new RPCVariable(mbed, "Learn_name7");
+        RPCName8 = new RPCVariable(mbed, "Learn_name8");
+        RPCName9 = new RPCVariable(mbed, "Learn_name9");
+
+        function send_id(clicked_id) {
+            RPCRequest.write(clicked_id);
+        }
+
+        function learner() {
+
+            a = document.getElementById("button_name").value;
+            if (a.length > 10) {
+                alert("Button name cannot exceed 10 characters!");
+                document.getElementById("button_name").value = "";
+            } else if (a.length == 0) {
+                alert("Button name needed!");
+                document.getElementById("button_name").value = "";
+            } else {
+                RPCLearn.write(1);
+                a = a.split('');
+                for (i = 0; i < 10; i++) {
+                    if (a[i] == undefined)
+                        a[i] = '~';
+                }
+                for (i = 0; i < 10; i++) {
+                    var x = eval("RPCName" + i);
+                    x.write(a[i]);
+                }
+            }
+        }
+
+    </script>
+    <script>
+        $.get('/sd/SmartRemote/db.txt', function(data) {
+            //$('#text').append(data);
+            data = data.split("\n");
+            for (d in data) {
+                if (d % 5 == 1) // Grab all the button names (every third entry)
+                    $('#buttons').append("<button id=" + data[d - 1] + " style=\"width: 100%; font-size: 60px; padding: 10px; margin: 10px;\" onClick=\"send_id(this.id)\">" + data[d] + "</button></ br></ br>"); //set id's
+            }
+        });
+
+    </script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <h1>Magic&nbsp;lighting</h1>
+    <h2>Smart Remote Controller</h2>
+	<div class="backimg">
+		<div id="buttons" class="rijtjes">
+			<button id="1" class="button black" onclick="send_id(this.id)">+</button>
+			<button id="2" class="button black" onclick="send_id(this.id)">-</button>
+			<button id="3" class="button r" onclick="send_id(this.id)">Off</button>
+			<button id="4" class="button g" onclick="send_id(this.id)">On</button>
+			<button id="5" class="button r" onclick="send_id(this.id)">R</button>
+			<button id="6" class="button g" onclick="send_id(this.id)">G</button>
+			<button id="7" class="button b" onclick="send_id(this.id)">B</button>
+			<button id="8" class="button black" onclick="send_id(this.id)">W</button>
+			<button id="9" class="button oranje" onclick="send_id(this.id)"></button>
+			<button id="10" class="button lichtgroen" onclick="send_id(this.id)"></button>
+			<button id="11" class="button a11" onclick="send_id(this.id)"></button>
+			<button id="12" class="button grey" onclick="send_id(this.id)">Flash</button>
+			<button id="13" class="button a13" onclick="send_id(this.id)"></button>
+			<button id="14" class="button a14" onclick="send_id(this.id)"></button>
+			<button id="15" class="button a15" onclick="send_id(this.id)"></button>
+			<button id="16" class="button grey" onclick="send_id(this.id)">Strobe</button>
+			<button id="17" class="button a17" onclick="send_id(this.id)"></button>
+			<button id="18" class="button a18" onclick="send_id(this.id)"></button>
+			<button id="19" class="button a19" onclick="send_id(this.id)"></button>
+			<button id="20" class="button grey" onclick="send_id(this.id)">Fade</button>
+			<button id="21" class="button a21" onclick="send_id(this.id)"></button>
+			<button id="22" class="button a22" onclick="send_id(this.id)"></button>
+			<button id="23" class="button a23" onclick="send_id(this.id)"></button>
+			<button id="24" class="button grey" onclick="send_id(this.id)">Smooth</button>
+		</div>
+	</div>
+
+    <footer>
+        <a href="https://twitter.com/ii_edison" class="fa fa-twitter"></a>
+    </footer>
+
+</body>
+
+</html>
